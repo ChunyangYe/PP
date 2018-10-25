@@ -1,0 +1,3 @@
+[submodule "SurfaceMeshProcessing/Include/eigen"]
+	path = SurfaceMeshProcessing/Include/eigen
+	url = https://github.com/eigenteam/eigen-git-mirror.git

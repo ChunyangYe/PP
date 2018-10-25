@@ -1,0 +1,5 @@
+@article {Liu_PP_2018,
+title = {Progressive Parameterizations},
+author = {Ligang Liu and Chunyang Ye and Ruiqi Ni and Xiao-Ming Fu},
+operating system= {Windows 10}
+}

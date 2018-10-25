@@ -1,0 +1,1 @@
+for %%X in (../data/*.obj) do PP.exe ../data/%%X
