@@ -104,7 +104,6 @@ void PardisoSolver::pardiso_init()
 	pardiso(pt, &maxfct, &mnum, &mtype, &phase,
 		&num, a.data(), ia.data(), ja.data(), &idum, &nrhs,
 		iparm, &msglvl, &ddum, &ddum, &error, dparm);
-	//cout << "fuck";
 	if (error != 0) {
 		printf("\nERROR during symbolic factorization: %d", error);
 		exit(1);
