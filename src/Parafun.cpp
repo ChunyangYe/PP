@@ -681,7 +681,14 @@ void Parafun::SLIM()
 
 		new_sig0 = sqrt(1 + 1 / sig0 + 1 / (sig0*sig0) + 1 / (sig0*sig0*sig0)); new_sig1 = sqrt(1 + 1 / sig1 + 1 / (sig1*sig1) + 1 / (sig1*sig1*sig1));
 
-		temp = (new_sig1 - new_sig0) / (sig1*sig1 - sig0*sig0);
+		if (beta_norm < 1e-6)
+		{
+			temp = 0;
+		}
+		else
+		{
+			temp = (new_sig1 - new_sig0) / (sig1*sig1 - sig0 * sig0);
+		}
 
 		w00 = temp*(j00*j00 + j01*j01 - 0.5*(sig0*sig0 + sig1*sig1)) + 0.5*(new_sig0 + new_sig1);
 		w01 = temp*(j00*j10 + j01*j11);
