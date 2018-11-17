@@ -681,7 +681,7 @@ void Parafun::SLIM()
 
 		new_sig0 = sqrt(1 + 1 / sig0 + 1 / (sig0*sig0) + 1 / (sig0*sig0*sig0)); new_sig1 = sqrt(1 + 1 / sig1 + 1 / (sig1*sig1) + 1 / (sig1*sig1*sig1));
 
-		if (beta_norm < 1e-6)
+		if (beta_norm < 1e-8)
 		{
 			temp = 0;
 		}
