@@ -14,7 +14,7 @@
 #include "PardisoSolver.h"
 using namespace Eigen;
 using namespace std;
-
+double get_smallest_pos_quad_zero(double a, double b, double c);
 class Parafun
 {
 public:
