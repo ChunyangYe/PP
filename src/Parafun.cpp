@@ -961,25 +961,7 @@ void Parafun::max_step(const VectorXd &xx, const VectorXd &dd, double &step)
 		b2 = (x4 - x3) * (d2 - d0) + (x2 - x0) * (d4 - d3);
 		b = b1 - b2;
 		c = (x1 - x0) * (x5 - x3) - (x4 - x3) * (x2 - x0);
-		tt = numeric_limits<double>::infinity();
-		//tt = 10000;
-		if (b*b - 4 * a*c >= 0)
-		{
-			tt1 = 1 / (2 * a) * (-b + sqrt(b*b - 4 * a*c));
-			tt2 = 1 / (2 * a) * (-b - sqrt(b*b - 4 * a*c));
-			if (tt1 > 0 && tt2 > 0)
-			{
-				tt = min(tt1, tt2);
-			}
-			if (tt1 > 0 && tt2 < 0)
-			{
-				tt = tt1;
-			}
-			if (tt1 < 0 && tt2 > 0)
-			{
-				tt = tt2;
-			}
-		}
+		tt = get_smallest_pos_quad_zero( a, b, c);
 		if (temp_t > tt)
 		{
 			temp_t = tt;
@@ -989,6 +971,54 @@ void Parafun::max_step(const VectorXd &xx, const VectorXd &dd, double &step)
 	step = temp_t;
 }
 
+// from libigl
+double get_smallest_pos_quad_zero(double a, double b, double c)
+{
+	using namespace std;
+	double t1, t2;
+	if (std::abs(a) > 1.0e-10)
+	{
+		double delta_in = pow(b, 2) - 4 * a * c;
+		if (delta_in <= 0)
+		{
+			return INFINITY;
+		}
+
+		double delta = sqrt(delta_in); // delta >= 0
+		if (b >= 0) // avoid subtracting two similar numbers
+		{
+			double bd = -b - delta;
+			t1 = 2 * c / bd;
+			t2 = bd / (2 * a);
+		}
+		else
+		{
+			double bd = -b + delta;
+			t1 = bd / (2 * a);
+			t2 = (2 * c) / bd;
+		}
+
+		assert(std::isfinite(t1));
+		assert(std::isfinite(t2));
+
+		if (a < 0) std::swap(t1, t2); // make t1 > t2
+		// return the smaller positive root if it exists, otherwise return infinity
+		if (t1 > 0)
+		{
+			return t2 > 0 ? t2 : t1;
+		}
+		else
+		{
+			return INFINITY;
+		}
+	}
+	else
+	{
+		if (b == 0) return INFINITY; // just to avoid divide-by-zero
+		t1 = -c / b;
+		return t1 > 0 ? t1 : INFINITY;
+	}
+}
 void Parafun::calc_gradient_norm(const VectorXd &x)
 {
 	double area_now;
