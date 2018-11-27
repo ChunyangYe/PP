@@ -968,6 +968,8 @@ void Parafun::max_step(const VectorXd &xx, const VectorXd &dd, double &step)
 		}
 
 	}
+	if(temp_t==INFINITY)
+		temp_t=100;
 	step = temp_t;
 }
 
