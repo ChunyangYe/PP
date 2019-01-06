@@ -497,7 +497,7 @@ void Parafun::Pre_calculate()
 void Parafun::Update_source_same_t()
 {
 	double t_min = 1;
-	int geqK = -1;
+	int geqK = 0;
 
 	vector<double> all_s0; all_s0.resize(F_N);
 	vector<double> all_s1; all_s1.resize(F_N);
@@ -557,12 +557,21 @@ void Parafun::Update_source_same_t()
 		all_s0[i] = sig0;
 		all_s1[i] = sig1;
 
-		double temp = 1 / (sig1*sig1 - sig0*sig0);
-
-		all_w00[i] = temp*(j00*j00 + j10*j10 - 0.5*(sig0*sig0 + sig1*sig1));
-		all_w01[i] = temp*(j00*j01 + j10*j11);
-		all_w10[i] = temp*(j01*j00 + j11*j10);
-		all_w11[i] = temp*(j01*j01 + j11*j11 - 0.5*(sig0*sig0 + sig1*sig1));
+		if (beta_norm < 1e-15)
+		{
+			all_w00[i] = 0.0;
+			all_w01[i] = 0.0;
+			all_w10[i] = 0.0;
+			all_w11[i] = 0.0;
+		}
+		else
+		{
+			double temp = 1 / (sig1*sig1 - sig0 * sig0);
+			all_w00[i] = temp * (j00*j00 + j10 * j10 - 0.5*(sig0*sig0 + sig1 * sig1));
+			all_w01[i] = temp * (j00*j01 + j10 * j11);
+			all_w10[i] = temp * (j01*j00 + j11 * j10);
+			all_w11[i] = temp * (j01*j01 + j11 * j11 - 0.5*(sig0*sig0 + sig1 * sig1));
+		}
 
 		if (E_d<=bound_distortion_K)
 		{
@@ -578,7 +587,7 @@ void Parafun::Update_source_same_t()
 		}
 	}
 
-	changetocm_flag = (geqK + 1.0) / F_N;
+	changetocm_flag = (double)geqK / F_N;
 
 	for (int i = 0; i < F_N; ++i)
 	{
@@ -681,7 +690,7 @@ void Parafun::SLIM()
 
 		new_sig0 = sqrt(1 + 1 / sig0 + 1 / (sig0*sig0) + 1 / (sig0*sig0*sig0)); new_sig1 = sqrt(1 + 1 / sig1 + 1 / (sig1*sig1) + 1 / (sig1*sig1*sig1));
 
-		if (beta_norm < 1e-8)
+		if (beta_norm < 1e-15)
 		{
 			temp = 0;
 		}
